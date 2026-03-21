@@ -105,6 +105,15 @@ Gradle build 성공 확인 (./gradlew assembleDebug)
 BACKLOG.md에서 완료된 태스크 [x]로 마킹
 ```
 
+### Step 6: 커밋 및 PR (Pull Request) 생성 (필수)
+```
+1. 작업 완료된 단일 SPEC에 대해서만 feature/spec-XXX 브랜치를 분리한다. (또는 미리 분리해서 작업)
+2. 태스크 단위로 커밋한다. (예: `feat: [SPEC-001] Hilt 플러그인 추가`)
+3. Github CLI (`gh pr create`)를 사용하여 PR을 요청한다.
+4. **중요**: PR 생성 시 사용자가 확인해야 하는 핵심 부분(구현 내용 변경사항, 빌드 체크 항목 등)을 명시적으로 적는다.
+5. 사용자가 PR을 머지하거나 확인한 후에 다음 SPEC으로 진행한다.
+```
+
 ---
 
 ## 4. 코딩 컨벤션
