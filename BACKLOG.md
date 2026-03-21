@@ -89,22 +89,22 @@
 - [x] `Todo.kt` data class 작성 (domain model)
 - [x] `TodoPriority.kt` enum 작성 (LOW, MEDIUM, HIGH — 선택사항)
 
-### [/] SPEC-202: UseCase 구현
+### ✅ SPEC-202: UseCase 구현
 ```
 목표: 각 비즈니스 액션을 UseCase로 캡슐화한다
 완료 조건: 각 UseCase가 단일 책임을 가지고 독립적으로 테스트 가능
 ```
-- [ ] `GetTodosForDateUseCase.kt`
-- [ ] `AddTodoUseCase.kt`
-- [ ] `ToggleTodoUseCase.kt` (완료/미완료 토글)
-- [ ] `DeleteTodoUseCase.kt`
-- [ ] `GetTodoByIdUseCase.kt`
+- [x] `GetTodosForDateUseCase.kt`
+- [x] `AddTodoUseCase.kt`
+- [x] `ToggleTodoUseCase.kt` (완료/미완료 토글)
+- [x] `DeleteTodoUseCase.kt`
+- [x] `GetTodoByIdUseCase.kt`
 
 ---
 
 ## Epic 3 — Presentation 레이어 (ViewModel)
 
-### SPEC-301: Calendar ViewModel
+### [/] SPEC-301: Calendar ViewModel
 ```
 목표: 날짜 선택과 Todo 목록을 관리하는 ViewModel
 완료 조건: 날짜 변경 시 StateFlow에서 해당 날짜의 Todo 목록 emit
