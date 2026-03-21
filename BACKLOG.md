@@ -104,12 +104,12 @@
 
 ## Epic 3 — Presentation 레이어 (ViewModel)
 
-### [/] SPEC-301: Calendar ViewModel
+### ✅ SPEC-301: Calendar ViewModel
 ```
 목표: 날짜 선택과 Todo 목록을 관리하는 ViewModel
 완료 조건: 날짜 변경 시 StateFlow에서 해당 날짜의 Todo 목록 emit
 ```
-- [ ] `TodoUiState.kt` 정의
+- [x] `TodoUiState.kt` 정의
   ```kotlin
   data class TodoUiState(
       val selectedDate: LocalDate,
@@ -118,7 +118,7 @@
       val error: String?
   )
   ```
-- [ ] `TodoUiEvent.kt` sealed class 정의
+- [x] `TodoUiEvent.kt` sealed class 정의
   ```kotlin
   sealed class TodoUiEvent {
       data class SelectDate(val date: LocalDate) : TodoUiEvent()
@@ -127,18 +127,18 @@
       data class DeleteTodo(val id: Long) : TodoUiEvent()
   }
   ```
-- [ ] `TodoUiEffect.kt` sealed class 정의 (일회성 이벤트: 스낵바, 네비게이션)
-- [ ] `TodoViewModel.kt` 구현 (`@HiltViewModel`)
-  - [ ] `uiState: StateFlow<TodoUiState>` 노출
-  - [ ] `effect: SharedFlow<TodoUiEffect>` 노출
-  - [ ] `onEvent(event: TodoUiEvent)` 처리
-  - [ ] Flow 수집: 날짜 변경 시 Todo 목록 자동 갱신
+- [x] `TodoUiEffect.kt` sealed class 정의 (일회성 이벤트: 스낵바, 네비게이션)
+- [x] `TodoViewModel.kt` 구현 (`@HiltViewModel`)
+  - [x] `uiState: StateFlow<TodoUiState>` 노출
+  - [x] `effect: SharedFlow<TodoUiEffect>` 노출
+  - [x] `onEvent(event: TodoUiEvent)` 처리
+  - [x] Flow 수집: 날짜 변경 시 Todo 목록 자동 갱신
 
 ---
 
 ## Epic 4 — UI 레이어 (Jetpack Compose)
 
-### SPEC-401: 앱 기본 구조 (NavHost, Theming)
+### [/] SPEC-401: 앱 기본 구조 (NavHost, Theming)
 ```
 목표: 앱 테마와 네비게이션 구조를 설정한다
 완료 조건: 빈 화면이라도 앱 실행 및 네비게이션 동작
