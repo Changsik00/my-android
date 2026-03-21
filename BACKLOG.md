@@ -17,41 +17,41 @@
 
 ## Epic 0 — 프로젝트 기반 설정
 
-### SPEC-001: 의존성 및 플러그인 설정
+### ✅ SPEC-001: 의존성 및 플러그인 설정
 ```
 목표: 필요한 모든 라이브러리를 build.gradle.kts에 추가한다
 완료 조건: Gradle sync 성공, 컴파일 에러 없음
 ```
-- [ ] `gradle/libs.versions.toml`에 Room, Hilt, Navigation, Coroutines, Lifecycle 버전 추가
-- [ ] `app/build.gradle.kts`에 KSP 플러그인, Hilt 플러그인 추가
-- [ ] `app/build.gradle.kts`에 모든 의존성 추가
-- [ ] `build.gradle.kts` (root)에 Hilt 플러그인 선언
-- [ ] Gradle sync 성공 확인
+- [x] `gradle/libs.versions.toml`에 Room, Hilt, Navigation, Coroutines, Lifecycle 버전 추가
+- [x] `app/build.gradle.kts`에 KSP 플러그인, Hilt 플러그인 추가
+- [x] `app/build.gradle.kts`에 모든 의존성 추가
+- [x] `build.gradle.kts` (root)에 Hilt 플러그인 선언
+- [x] Gradle sync 성공 확인
 
-### SPEC-002: Hilt 애플리케이션 설정
+### ✅ SPEC-002: Hilt 애플리케이션 설정
 ```
 목표: 앱 전체에 Hilt DI를 활성화한다
 완료 조건: @HiltAndroidApp 앱 실행 성공
 ```
-- [ ] `MyApplication.kt` 생성 (`@HiltAndroidApp`)
-- [ ] `AndroidManifest.xml`에 `application name` 등록
-- [ ] `MainActivity.kt`에 `@AndroidEntryPoint` 적용
+- [x] `MyApplication.kt` 생성 (`@HiltAndroidApp`)
+- [x] `AndroidManifest.xml`에 `application name` 등록
+- [x] `MainActivity.kt`에 `@AndroidEntryPoint` 적용
 
-### SPEC-003: 앱 패키지 구조 생성
+### ✅ SPEC-003: 앱 패키지 구조 생성
 ```
 목표: Clean Architecture 레이어별 패키지 구조를 만든다
 완료 조건: 패키지 구조가 docs/03_architecture.md와 일치
 ```
-- [ ] `data/` 패키지 생성 (db, repository)
-- [ ] `domain/` 패키지 생성 (model, repository, usecase)
-- [ ] `presentation/` 패키지 생성 (screens, viewmodel, components)
-- [ ] `di/` 패키지 생성
+- [x] `data/` 패키지 생성 (db, repository)
+- [x] `domain/` 패키지 생성 (model, repository, usecase)
+- [x] `presentation/` 패키지 생성 (screens, viewmodel, components)
+- [x] `di/` 패키지 생성
 
 ---
 
 ## Epic 1 — 데이터 레이어
 
-### SPEC-101: Room 데이터베이스 설정
+### [/] SPEC-101: Room 데이터베이스 설정
 ```
 목표: 로컬 영구 저장소를 설정한다
 완료 조건: DB 생성 성공, Dao 호출 시 데이터 반환
