@@ -7,5 +7,6 @@ data class Todo(
     val title: String,
     val description: String = "",
     val date: LocalDate,
-    val isCompleted: Boolean = false
+    val isCompleted: Boolean = false,
+    val priority: TodoPriority = TodoPriority.LOW
 )
