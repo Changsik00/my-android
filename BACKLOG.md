@@ -81,15 +81,15 @@
 
 ## Epic 2 — 도메인 레이어
 
-### [/] SPEC-201: 도메인 모델 정의
+### ✅ SPEC-201: 도메인 모델 정의
 ```
 목표: UI와 DB에 독립적인 비즈니스 모델을 정의한다
 완료 조건: Todo domain model이 Entity와 분리되어 존재
 ```
-- [ ] `Todo.kt` data class 작성 (domain model)
-- [ ] `TodoPriority.kt` enum 작성 (LOW, MEDIUM, HIGH — 선택사항)
+- [x] `Todo.kt` data class 작성 (domain model)
+- [x] `TodoPriority.kt` enum 작성 (LOW, MEDIUM, HIGH — 선택사항)
 
-### SPEC-202: UseCase 구현
+### [/] SPEC-202: UseCase 구현
 ```
 목표: 각 비즈니스 액션을 UseCase로 캡슐화한다
 완료 조건: 각 UseCase가 단일 책임을 가지고 독립적으로 테스트 가능
