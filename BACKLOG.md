@@ -138,16 +138,16 @@
 
 ## Epic 4 — UI 레이어 (Jetpack Compose)
 
-### [/] SPEC-401: 앱 기본 구조 (NavHost, Theming)
+### ✅ SPEC-401: 앱 기본 구조 (NavHost, Theming)
 ```
 목표: 앱 테마와 네비게이션 구조를 설정한다
 완료 조건: 빈 화면이라도 앱 실행 및 네비게이션 동작
 ```
-- [ ] Material3 색상 테마 설정 (`Color.kt`, `Theme.kt`)
-- [ ] `NavGraph.kt` 작성 (NavHost, Screen sealed class)
-- [ ] `MainActivity.kt`에 NavHost 설정
+- [x] Material3 색상 테마 설정 (`Color.kt`, `Theme.kt`)
+- [x] `NavGraph.kt` 작성 (NavHost, Screen sealed class)
+- [x] `MainActivity.kt`에 NavHost 설정
 
-### SPEC-402: Calendar Screen UI
+### [/] SPEC-402: Calendar Screen UI
 ```
 목표: 날짜 선택 화면을 Compose로 구현한다
 완료 조건: 날짜 탭하면 선택 상태가 변하고, 해당 날짜의 Todo 수가 표시됨

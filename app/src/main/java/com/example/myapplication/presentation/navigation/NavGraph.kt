@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.myapplication.presentation.navigation.Screen
+import com.example.myapplication.presentation.screens.calendar.CalendarScreen
 
 @Composable
 fun TodoNavGraph(
@@ -20,10 +22,11 @@ fun TodoNavGraph(
         startDestination = startDestination
     ) {
         composable(route = Screen.Calendar.route) {
-            // SPEC-401: 앱 구조 확인용 빈 화면
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "Calendar Screen (준비 중)")
-            }
+            CalendarScreen(
+                onNavigateToDetail = { todoId ->
+                    navController.navigate(Screen.TodoDetail.createRoute(todoId))
+                }
+            )
         }
     }
 }
