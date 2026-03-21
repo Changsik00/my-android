@@ -22,7 +22,11 @@ fun TodoItem(
     modifier: Modifier = Modifier
 ) {
     val cardColor by animateColorAsState(
-        targetValue = if (todo.isCompleted) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surfaceVariant,
+        targetValue = if (todo.isCompleted) {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        },
         label = "cardColorAnimation"
     )
 
