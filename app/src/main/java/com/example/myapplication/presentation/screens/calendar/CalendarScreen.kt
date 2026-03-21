@@ -11,8 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.presentation.components.TodoListSection
 import com.example.myapplication.presentation.viewmodel.TodoUiEvent
 import com.example.myapplication.presentation.viewmodel.TodoViewModel
+import com.example.myapplication.domain.model.Todo
 import java.time.LocalDate
 
 @Composable
@@ -24,7 +26,13 @@ fun CalendarScreen(
 
     CalendarScreenContent(
         selectedDate = uiState.selectedDate,
+        todos = uiState.todos,
+        isLoading = uiState.isLoading,
+        error = uiState.error,
         onDateSelected = { date -> viewModel.onEvent(TodoUiEvent.SelectDate(date)) },
+        onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
+        onDeleteTodo = { id -> viewModel.onEvent(TodoUiEvent.DeleteTodo(id)) },
+        onTodoClick = onNavigateToDetail,
         onAddClick = { /* TODO: Open Bottom Sheet (SPEC-404) */ }
     )
 }
@@ -33,7 +41,13 @@ fun CalendarScreen(
 @Composable
 fun CalendarScreenContent(
     selectedDate: LocalDate,
+    todos: List<Todo>,
+    isLoading: Boolean,
+    error: String?,
     onDateSelected: (LocalDate) -> Unit,
+    onToggleTodo: (Long) -> Unit,
+    onDeleteTodo: (Long) -> Unit,
+    onTodoClick: (Long) -> Unit,
     onAddClick: () -> Unit
 ) {
     Scaffold(
@@ -65,19 +79,16 @@ fun CalendarScreenContent(
             
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             
-            // SPEC-403: Todo List will replace this Box
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "${selectedDate}의 할 일 목록 (준비 중)",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            // SPEC-403: Todo List Section 추가
+            TodoListSection(
+                todos = todos,
+                isLoading = isLoading,
+                error = error,
+                onToggleTodo = onToggleTodo,
+                onDeleteTodo = onDeleteTodo,
+                onTodoClick = onTodoClick,
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
