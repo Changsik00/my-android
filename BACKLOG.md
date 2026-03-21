@@ -67,21 +67,21 @@
 - [x] `TodoDatabase.kt` 작성 (`@Database`)
 - [x] `DatabaseModule.kt` (Hilt) 작성
 
-### [/] SPEC-102: Repository 레이어 구현
+### ✅ SPEC-102: Repository 레이어 구현
 ```
 목표: 데이터 소스를 추상화하는 Repository를 구현한다
 완료 조건: ViewModel이 Repository 인터페이스만 의존하도록 구성
 ```
-- [ ] `TodoRepository.kt` 인터페이스 정의 (domain 레이어)
-- [ ] `TodoRepositoryImpl.kt` 구현 (data 레이어)
-- [ ] `RepositoryModule.kt` (Hilt) 바인딩 작성
-- [ ] Mapper 함수: `TodoEntity.toDomain()`, `Todo.toEntity()`
+- [x] `TodoRepository.kt` 인터페이스 정의 (domain 레이어)
+- [x] `TodoRepositoryImpl.kt` 구현 (data 레이어)
+- [x] `RepositoryModule.kt` (Hilt) 바인딩 작성
+- [x] Mapper 함수: `TodoEntity.toDomain()`, `Todo.toEntity()`
 
 ---
 
 ## Epic 2 — 도메인 레이어
 
-### SPEC-201: 도메인 모델 정의
+### [/] SPEC-201: 도메인 모델 정의
 ```
 목표: UI와 DB에 독립적인 비즈니스 모델을 정의한다
 완료 조건: Todo domain model이 Entity와 분리되어 존재

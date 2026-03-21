@@ -42,7 +42,8 @@ class TodoRepositoryImpl @Inject constructor(
             title = title,
             description = description,
             date = date,
-            isCompleted = isCompleted
+            isCompleted = isCompleted,
+            priority = priority
         )
     }
 
@@ -52,7 +53,8 @@ class TodoRepositoryImpl @Inject constructor(
             title = title,
             description = description,
             date = date,
-            isCompleted = isCompleted
+            isCompleted = isCompleted,
+            priority = priority
         )
     }
 }
