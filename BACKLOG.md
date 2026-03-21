@@ -51,23 +51,23 @@
 
 ## Epic 1 — 데이터 레이어
 
-### [/] SPEC-101: Room 데이터베이스 설정
+### ✅ SPEC-101: Room 데이터베이스 설정
 ```
 목표: 로컬 영구 저장소를 설정한다
 완료 조건: DB 생성 성공, Dao 호출 시 데이터 반환
 ```
-- [ ] `TodoEntity.kt` 작성 (id, title, description, date, isCompleted, createdAt)
-- [ ] `LocalDateConverter.kt` 작성 (TypeConverter: LocalDate ↔ Long)
-- [ ] `TodoDao.kt` 인터페이스 작성
-  - [ ] `getTodosByDate(date: LocalDate): Flow<List<TodoEntity>>`
-  - [ ] `insertTodo(todo: TodoEntity): Long`
-  - [ ] `updateTodo(todo: TodoEntity)`
-  - [ ] `deleteTodo(id: Long)`
-  - [ ] `getTodoById(id: Long): TodoEntity?`
-- [ ] `TodoDatabase.kt` 작성 (`@Database`)
-- [ ] `DatabaseModule.kt` (Hilt) 작성
+- [x] `TodoEntity.kt` 작성 (id, title, description, date, isCompleted, createdAt)
+- [x] `LocalDateConverter.kt` 작성 (TypeConverter: LocalDate ↔ Long)
+- [x] `TodoDao.kt` 인터페이스 작성
+  - [x] `getTodosByDate(date: LocalDate): Flow<List<TodoEntity>>`
+  - [x] `insertTodo(todo: TodoEntity): Long`
+  - [x] `updateTodo(todo: TodoEntity)`
+  - [x] `deleteTodo(id: Long)`
+  - [x] `getTodoById(id: Long): TodoEntity?`
+- [x] `TodoDatabase.kt` 작성 (`@Database`)
+- [x] `DatabaseModule.kt` (Hilt) 작성
 
-### SPEC-102: Repository 레이어 구현
+### [/] SPEC-102: Repository 레이어 구현
 ```
 목표: 데이터 소스를 추상화하는 Repository를 구현한다
 완료 조건: ViewModel이 Repository 인터페이스만 의존하도록 구성
