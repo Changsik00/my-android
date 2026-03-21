@@ -63,7 +63,7 @@ fun CalendarScreenContent(
                 modifier = Modifier.padding(16.dp)
             )
             
-            Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             
             // SPEC-403: Todo List will replace this Box
             Box(
