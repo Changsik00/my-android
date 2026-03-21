@@ -152,13 +152,13 @@
 목표: 날짜 선택 화면을 Compose로 구현한다
 완료 조건: 날짜 탭하면 선택 상태가 변하고, 해당 날짜의 Todo 수가 표시됨
 ```
-- [ ] `CalendarScreen.kt` (Stateful Route + Stateless Screen 분리)
-- [ ] 월 단위 달력 컴포넌트 (`MonthCalendar.kt`)
-  - [ ] 현재 월 표시, 이전/다음 월 이동
-  - [ ] 날짜 셀 — 선택 상태 하이라이트
-  - [ ] 날짜 셀 — Todo 존재 시 인디케이터 표시
-- [ ] 선택된 날짜의 Todo 요약 표시 (몇 개 완료/전체)
-- [ ] FAB — 할 일 추가 버튼
+- [x] `CalendarScreen.kt` (Stateful Route + Stateless Screen 분리)
+- [x] 월 단위 달력 컴포넌트 (`MonthCalendar.kt`)
+  - [x] 현재 월 표시, 이전/다음 월 이동
+  - [x] 날짜 셀 — 선택 상태 하이라이트
+  - [x] 날짜 셀 — Todo 존재 시 인디케이터 표시
+- [x] 선택된 날짜의 Todo 요약 표시 (몇 개 완료/전체)
+- [x] FAB — 할 일 추가 버튼
 
 ### SPEC-403: Todo List UI
 ```
