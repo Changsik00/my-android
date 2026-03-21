@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.usecase.*
+import com.example.myapplication.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -45,7 +46,7 @@ class TodoViewModel @Inject constructor(
                     _uiState.update { it.copy(todos = todos, isLoading = false) }
                 }.onFailure { exception ->
                     _uiState.update { it.copy(error = exception.message ?: "Unknown error", isLoading = false) }
-                    _effect.emit(TodoUiEffect.ShowSnackbar("데이터를 불러오지 못했습니다."))
+                    _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("데이터를 불러오지 못했습니다.")))
                 }
             }
             .launchIn(viewModelScope)
@@ -66,19 +67,27 @@ class TodoViewModel @Inject constructor(
                             date = uiState.value.selectedDate,
                             priority = event.priority
                         )
-                        _effect.emit(TodoUiEffect.ShowSnackbar("할 일이 추가되었습니다."))
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 추가되었습니다.")))
                     } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar("할 일 추가 실패: ${e.message}"))
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일 추가 실패: ${e.message}")))
                     }
                 }
             }
-            is TodoUiEvent.ToggleTodo, is TodoUiEvent.ToggleTodoCompletion -> {
-                val id = (event as? TodoUiEvent.ToggleTodo)?.id ?: (event as? TodoUiEvent.ToggleTodoCompletion)?.id ?: return
+            is TodoUiEvent.ToggleTodo -> {
                 viewModelScope.launch {
                     try {
-                        toggleTodoUseCase(id)
+                        toggleTodoUseCase(event.id)
                     } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar("상태 변경 실패"))
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("상태 변경 실패")))
+                    }
+                }
+            }
+            is TodoUiEvent.ToggleTodoCompletion -> {
+                viewModelScope.launch {
+                    try {
+                        toggleTodoUseCase(event.id)
+                    } catch (e: Exception) {
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("상태 변경 실패")))
                     }
                 }
             }
@@ -86,9 +95,9 @@ class TodoViewModel @Inject constructor(
                 viewModelScope.launch {
                     try {
                         deleteTodoUseCase(event.id)
-                        _effect.emit(TodoUiEffect.ShowSnackbar("할 일이 삭제되었습니다."))
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 삭제되었습니다.")))
                     } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar("할 일 삭제 실패"))
+                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일 삭제 실패")))
                     }
                 }
             }
