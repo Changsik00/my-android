@@ -185,20 +185,20 @@
   - [x] 저장 버튼 — 유효성 검사 (빈 제목 방지)
   - [x] 취소 버튼
 
-### [/] SPEC-405: 애니메이션 & UX 폴리싱
+### ✅ SPEC-405: 애니메이션 & UX 폴리싱
 ```
 목표: 자연스러운 전환 애니메이션으로 완성도를 높인다
 완료 조건: Todo 추가/삭제 시 애니메이션 동작
 ```
-- [ ] Todo 아이템 추가 시 `AnimatedVisibility`
-- [ ] 완료 토글 시 `animateColorAsState`
-- [ ] 화면 전환 애니메이션 (Navigation Compose)
+- [x] Todo 아이템 추가 시 `AnimatedVisibility`
+- [x] 완료 토글 시 `animateColorAsState`
+- [x] 화면 전환 애니메이션 (Navigation Compose)
 
 ---
 
 ## Epic 5 — 테스트 (권장)
 
-### SPEC-501: 데이터 레이어 테스트
+### [/] SPEC-501: 데이터 레이어 테스트
 ```
 목표: Room DB와 Repository를 격리된 환경에서 테스트한다
 완료 조건: 모든 Dao 쿼리 및 Repository 메서드가 테스트 통과
