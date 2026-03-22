@@ -4,25 +4,27 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.presentation.components.AddTodoBottomSheet
 import com.example.myapplication.presentation.components.TodoListSection
 import com.example.myapplication.presentation.viewmodel.TodoUiEvent
 import com.example.myapplication.presentation.viewmodel.TodoViewModel
 import com.example.myapplication.domain.model.Todo
 import java.time.LocalDate
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
     viewModel: TodoViewModel = hiltViewModel(),
     onNavigateToDetail: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     CalendarScreenContent(
         selectedDate = uiState.selectedDate,
@@ -33,8 +35,17 @@ fun CalendarScreen(
         onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
         onDeleteTodo = { id -> viewModel.onEvent(TodoUiEvent.DeleteTodo(id)) },
         onTodoClick = onNavigateToDetail,
-        onAddClick = { /* TODO: Open Bottom Sheet (SPEC-404) */ }
+        onAddClick = { showBottomSheet = true }
     )
+
+    if (showBottomSheet) {
+        AddTodoBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            onSaveTodo = { title, description, priority ->
+                viewModel.onEvent(TodoUiEvent.AddTodo(title, description, priority))
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

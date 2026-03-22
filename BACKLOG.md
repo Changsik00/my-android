@@ -160,21 +160,21 @@
 - [x] 선택된 날짜의 Todo 요약 표시 (몇 개 완료/전체)
 - [x] FAB — 할 일 추가 버튼
 
-### [/] SPEC-403: Todo List UI
+### ✅ SPEC-403: Todo List UI
 ```
 목표: 선택된 날짜의 할 일 목록을 표시한다
 완료 조건: LazyColumn으로 Todo 목록 표시, 스와이프 삭제, 탭으로 완료 토글
 ```
-- [ ] `TodoListSection.kt` Composable
-- [ ] `TodoItem.kt` Composable
-  - [ ] 완료 상태 체크박스
-  - [ ] 제목, 설명 표시
-  - [ ] 완료 시 취소선 스타일
-- [ ] 스와이프 삭제 (`SwipeToDismiss`)
-- [ ] 빈 목록 상태 UI (Empty State)
-- [ ] 로딩 중 UI (CircularProgressIndicator)
+- [x] `TodoListSection.kt` Composable
+- [x] `TodoItem.kt` Composable
+  - [x] 완료 상태 체크박스
+  - [x] 제목, 설명 표시
+  - [x] 완료 시 취소선 스타일
+- [x] 스와이프 삭제 (`SwipeToDismiss`)
+- [x] 빈 목록 상태 UI (Empty State)
+- [x] 로딩 중 UI (CircularProgressIndicator)
 
-### SPEC-404: Todo 추가 Dialog/Sheet
+### [/] SPEC-404: Todo 추가 Dialog/Sheet
 ```
 목표: 새 할 일을 추가하는 입력 UI
 완료 조건: 제목 입력 후 저장 시 목록에 즉시 반영
