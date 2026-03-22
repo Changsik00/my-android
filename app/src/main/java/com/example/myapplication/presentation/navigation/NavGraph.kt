@@ -1,5 +1,10 @@
 package com.example.myapplication.presentation.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -21,7 +26,11 @@ fun TodoNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        enterTransition = { slideInHorizontally(tween(300)) { it } + fadeIn(tween(300)) },
+        exitTransition = { slideOutHorizontally(tween(300)) { -it } + fadeOut(tween(300)) },
+        popEnterTransition = { slideInHorizontally(tween(300)) { -it } + fadeIn(tween(300)) },
+        popExitTransition = { slideOutHorizontally(tween(300)) { it } + fadeOut(tween(300)) }
     ) {
         composable(route = Screen.Calendar.route) {
             CalendarScreen(

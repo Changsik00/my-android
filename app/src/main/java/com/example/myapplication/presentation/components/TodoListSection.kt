@@ -72,6 +72,7 @@ fun TodoListSection(
                         SwipeToDismissBox(
                             state = dismissState,
                             enableDismissFromStartToEnd = false,
+                            modifier = Modifier.animateItem(),
                             backgroundContent = {
                                 val color = when (dismissState.targetValue) {
                                     SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
