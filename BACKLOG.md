@@ -198,15 +198,15 @@
 
 ## Epic 5 — 테스트 (권장)
 
-### [/] SPEC-501: 데이터 레이어 테스트
+### ✅ SPEC-501: 데이터 레이어 테스트
 ```
 목표: Room DB와 Repository를 격리된 환경에서 테스트한다
 완료 조건: 모든 Dao 쿼리 및 Repository 메서드가 테스트 통과
 ```
-- [ ] `TodoDaoTest.kt` (Room in-memory DB)
-- [ ] `TodoRepositoryImplTest.kt` (fake DB 사용)
+- [x] `TodoDaoTest.kt` (Room in-memory DB)
+- [x] `TodoRepositoryImplTest.kt` (fake DB 사용)
 
-### SPEC-502: ViewModel 테스트
+### [/] SPEC-502: ViewModel 테스트
 ```
 목표: ViewModel의 상태 전환 로직을 테스트한다
 완료 조건: 모든 UiEvent에 대한 UiState 변화 검증
