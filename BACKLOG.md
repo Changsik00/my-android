@@ -174,18 +174,18 @@
 - [x] 빈 목록 상태 UI (Empty State)
 - [x] 로딩 중 UI (CircularProgressIndicator)
 
-### [/] SPEC-404: Todo 추가 Dialog/Sheet
+### ✅ SPEC-404: Todo 추가 Dialog/Sheet
 ```
 목표: 새 할 일을 추가하는 입력 UI
 완료 조건: 제목 입력 후 저장 시 목록에 즉시 반영
 ```
-- [ ] `AddTodoBottomSheet.kt` (ModalBottomSheet)
-  - [ ] 제목 입력 (필수)
-  - [ ] 메모 입력 (선택)
-  - [ ] 저장 버튼 — 유효성 검사 (빈 제목 방지)
-  - [ ] 취소 버튼
+- [x] `AddTodoBottomSheet.kt` (ModalBottomSheet)
+  - [x] 제목 입력 (필수)
+  - [x] 메모 입력 (선택)
+  - [x] 저장 버튼 — 유효성 검사 (빈 제목 방지)
+  - [x] 취소 버튼
 
-### SPEC-405: 애니메이션 & UX 폴리싱
+### [/] SPEC-405: 애니메이션 & UX 폴리싱
 ```
 목표: 자연스러운 전환 애니메이션으로 완성도를 높인다
 완료 조건: Todo 추가/삭제 시 애니메이션 동작
