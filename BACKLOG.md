@@ -147,7 +147,7 @@
 - [x] `NavGraph.kt` 작성 (NavHost, Screen sealed class)
 - [x] `MainActivity.kt`에 NavHost 설정
 
-### [/] SPEC-402: Calendar Screen UI
+### ✅ SPEC-402: Calendar Screen UI
 ```
 목표: 날짜 선택 화면을 Compose로 구현한다
 완료 조건: 날짜 탭하면 선택 상태가 변하고, 해당 날짜의 Todo 수가 표시됨
@@ -160,7 +160,7 @@
 - [x] 선택된 날짜의 Todo 요약 표시 (몇 개 완료/전체)
 - [x] FAB — 할 일 추가 버튼
 
-### SPEC-403: Todo List UI
+### [/] SPEC-403: Todo List UI
 ```
 목표: 선택된 날짜의 할 일 목록을 표시한다
 완료 조건: LazyColumn으로 Todo 목록 표시, 스와이프 삭제, 탭으로 완료 토글
