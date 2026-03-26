@@ -17,13 +17,7 @@ class TodoViewModel @Inject constructor(
     private val addTodoUseCase: AddTodoUseCase,
     private val toggleTodoUseCase: ToggleTodoUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase
-) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(TodoUiState())
-    val uiState: StateFlow<TodoUiState> = _uiState.asStateFlow()
-
-    private val _effect = MutableSharedFlow<TodoUiEffect>()
-    val effect: SharedFlow<TodoUiEffect> = _effect.asSharedFlow()
+) : BaseViewModel<TodoUiEvent, TodoUiState, TodoUiEffect>(TodoUiState()) {
 
     // 별도의 date flow를 유지하여 flatMapLatest로 연결 (Reactive Architecture)
     private val dateFlow = MutableStateFlow(LocalDate.now())
@@ -36,69 +30,59 @@ class TodoViewModel @Inject constructor(
     private fun observeTodos() {
         dateFlow
             .flatMapLatest { date ->
-                _uiState.update { it.copy(isLoading = true, error = null) }
+                updateState { it.copy(isLoading = true, error = null) }
                 getTodosForDateUseCase(date)
                     .map { todos -> Result.success(todos) }
                     .catch { emit(Result.failure(it)) }
             }
             .onEach { result ->
                 result.onSuccess { todos ->
-                    _uiState.update { it.copy(todos = todos, isLoading = false) }
+                    updateState { it.copy(todos = todos, isLoading = false) }
                 }.onFailure { exception ->
-                    _uiState.update { it.copy(error = exception.message ?: "Unknown error", isLoading = false) }
-                    _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("데이터를 불러오지 못했습니다.")))
+                    updateState { it.copy(error = exception.message ?: "Unknown error", isLoading = false) }
+                    sendEffect(TodoUiEffect.ShowSnackbar(UiText.DynamicString("데이터를 불러오지 못했습니다.")))
                 }
             }
             .launchIn(viewModelScope)
     }
 
-    fun onEvent(event: TodoUiEvent) {
+    override fun onEvent(event: TodoUiEvent) {
         when (event) {
             is TodoUiEvent.SelectDate -> {
-                _uiState.update { it.copy(selectedDate = event.date) }
+                updateState { it.copy(selectedDate = event.date) }
                 dateFlow.value = event.date
             }
             is TodoUiEvent.AddTodo -> {
-                viewModelScope.launch {
-                    try {
-                        addTodoUseCase(
-                            title = event.title,
-                            description = event.description,
-                            date = uiState.value.selectedDate,
-                            priority = event.priority
-                        )
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 추가되었습니다.")))
-                    } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일 추가 실패: ${e.message}")))
-                    }
+                launchWithLoading(
+                    setLoading = { loading -> updateState { it.copy(isLoading = loading) } }
+                ) {
+                    addTodoUseCase(
+                        title = event.title,
+                        description = event.description,
+                        date = uiState.value.selectedDate,
+                        priority = event.priority
+                    )
+                    sendEffect(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 추가되었습니다.")))
                 }
             }
             is TodoUiEvent.ToggleTodo -> {
-                viewModelScope.launch {
-                    try {
-                        toggleTodoUseCase(event.id)
-                    } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("상태 변경 실패")))
-                    }
+                launchWithLoading(
+                    setLoading = { /* Toggle doesn't necessarily need a global loading spinner */ }
+                ) {
+                    toggleTodoUseCase(event.id)
                 }
             }
             is TodoUiEvent.ToggleTodoCompletion -> {
-                viewModelScope.launch {
-                    try {
-                        toggleTodoUseCase(event.id)
-                    } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("상태 변경 실패")))
-                    }
+                launchWithLoading(setLoading = {}) {
+                    toggleTodoUseCase(event.id)
                 }
             }
             is TodoUiEvent.DeleteTodo -> {
-                viewModelScope.launch {
-                    try {
-                        deleteTodoUseCase(event.id)
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 삭제되었습니다.")))
-                    } catch (e: Exception) {
-                        _effect.emit(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일 삭제 실패")))
-                    }
+                launchWithLoading(
+                    setLoading = { loading -> updateState { it.copy(isLoading = loading) } }
+                ) {
+                    deleteTodoUseCase(event.id)
+                    sendEffect(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 삭제되었습니다.")))
                 }
             }
         }
