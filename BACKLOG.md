@@ -228,21 +228,21 @@
 
 ## Epic 6 — 고급 패턴 (v2 추가 요구사항)
 
-### SPEC-601: Backbone 기반 클래스 구현
+### ✅ SPEC-601: Backbone 기반 클래스 구현
 ```
 목표: BaseViewModel / BaseRepository 보일러플레이트를 만들어 모든 기능의 뼈대를 제공한다
 완료 조건: TodoViewModel이 BaseViewModel을 상속하고 공통 로직이 제거됨
 참조: docs/04_advanced_patterns.md > Section 5
 ```
-- [ ] `BaseViewModel.kt` 작성 (제네릭: Event, State, Effect)
-  - [ ] `updateState()` 헬퍼
-  - [ ] `sendEffect()` 헬퍼
-  - [ ] `launchWithLoading()` 헬퍼 (에러 자동 전달)
-- [ ] `BaseRepository.kt` 작성
-  - [ ] `safeFlow()` 헬퍼 (Flow 에러 자동 catch)
-  - [ ] `safeCall()` 헬퍼 (suspend 에러 자동 catch)
-- [ ] `TodoViewModel`이 `BaseViewModel` 상속하도록 리팩토링
-- [ ] `TodoRepositoryImpl`이 `BaseRepository` 상속하도록 리팩토링
+- [x] `BaseViewModel.kt` 작성 (제네릭: Event, State, Effect)
+  - [x] `updateState()` 헬퍼
+  - [x] `sendEffect()` 헬퍼
+  - [x] `launchWithLoading()` 헬퍼 (에러 자동 전달)
+- [x] `BaseRepository.kt` 작성
+  - [x] `safeFlow()` 헬퍼 (Flow 에러 자동 catch)
+  - [x] `safeCall()` 헬퍼 (suspend 에러 자동 catch)
+- [x] `TodoViewModel`이 `BaseViewModel` 상속하도록 리팩토링
+- [x] `TodoRepositoryImpl`이 `BaseRepository` 상속하도록 리팩토링
 
 ### SPEC-602: 전역 에러 핸들러
 ```
