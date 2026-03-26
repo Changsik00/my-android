@@ -79,4 +79,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // Tests
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
 }
