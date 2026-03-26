@@ -206,14 +206,14 @@
 - [x] `TodoDaoTest.kt` (Room in-memory DB)
 - [x] `TodoRepositoryImplTest.kt` (fake DB 사용)
 
-### [/] SPEC-502: ViewModel 테스트
+### ✅ SPEC-502: ViewModel 테스트
 ```
 목표: ViewModel의 상태 전환 로직을 테스트한다
 완료 조건: 모든 UiEvent에 대한 UiState 변화 검증
 ```
-- [ ] `TodoViewModelTest.kt` (Turbine + MockK)
-- [ ] 날짜 변경 이벤트 → 상태 변화 검증
-- [ ] Todo 추가/삭제/완료 이벤트 검증
+- [x] `TodoViewModelTest.kt` (Turbine + MockK)
+- [x] 날짜 변경 이벤트 → 상태 변화 검증
+- [x] Todo 추가/삭제/완료 이벤트 검증
 
 ### SPEC-503: UI 테스트 (선택)
 ```

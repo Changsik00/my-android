@@ -1,18 +1,23 @@
 package com.example.myapplication.presentation.viewmodel
 
+import app.cash.turbine.test
 import com.example.myapplication.domain.model.Todo
-import com.example.myapplication.domain.repository.TodoRepository
+import com.example.myapplication.domain.model.TodoPriority
 import com.example.myapplication.domain.usecase.AddTodoUseCase
 import com.example.myapplication.domain.usecase.DeleteTodoUseCase
 import com.example.myapplication.domain.usecase.GetTodosForDateUseCase
 import com.example.myapplication.domain.usecase.ToggleTodoUseCase
+import com.example.myapplication.presentation.model.UiText
 import com.example.myapplication.util.MainDispatcherRule
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,90 +30,111 @@ class TodoViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: TodoViewModel
-    private lateinit var fakeRepository: FakeTodoRepository
+    private val getTodosForDateUseCase: GetTodosForDateUseCase = mockk()
+    private val addTodoUseCase: AddTodoUseCase = mockk()
+    private val toggleTodoUseCase: ToggleTodoUseCase = mockk()
+    private val deleteTodoUseCase: DeleteTodoUseCase = mockk()
 
     @Before
     fun setUp() {
-        fakeRepository = FakeTodoRepository()
+        // Default behavior for getTodosForDate to avoid crash on init
+        every { getTodosForDateUseCase(any()) } returns flowOf(emptyList())
+        
         viewModel = TodoViewModel(
-            getTodosForDateUseCase = GetTodosForDateUseCase(fakeRepository),
-            addTodoUseCase = AddTodoUseCase(fakeRepository),
-            toggleTodoUseCase = ToggleTodoUseCase(fakeRepository),
-            deleteTodoUseCase = DeleteTodoUseCase(fakeRepository)
+            getTodosForDateUseCase = getTodosForDateUseCase,
+            addTodoUseCase = addTodoUseCase,
+            toggleTodoUseCase = toggleTodoUseCase,
+            deleteTodoUseCase = deleteTodoUseCase
         )
     }
 
     @Test
-    fun selectDate_updatesSelectedDateInUiState() = runTest {
-        // Given
-        val targetDate = LocalDate.of(2025, 1, 1)
-
-        // When
-        viewModel.onEvent(TodoUiEvent.SelectDate(targetDate))
-
-        // Then
-        val currentState = viewModel.uiState.value
-        assertEquals(targetDate, currentState.selectedDate)
-    }
-
-    @Test
-    fun addTodo_insertsIntoRepositoryAndClearsState() = runTest {
-        // Given
-        val initialSize = fakeRepository.todos.size
-        
-        // When
-        viewModel.onEvent(TodoUiEvent.AddTodo(title = "test1", description = "desc"))
-        
-        // Then
-        assertEquals(initialSize + 1, fakeRepository.todos.size)
-        val addedTodo = fakeRepository.todos.last()
-        assertEquals("test1", addedTodo.title)
-        assertEquals("desc", addedTodo.description)
-        // AddTodo 시에 ViewModel 내부의 selectedDate가 할당되는지 (현재 선택 날짜 기반) 파악
-        assertEquals(viewModel.uiState.value.selectedDate, addedTodo.date)
-    }
-
-    @Test
-    fun toggleTodo_updatesRepository() = runTest {
-        // Given
-        val todo = Todo(1L, "Test", "", LocalDate.now(), false)
-        fakeRepository.todos.add(todo)
-        
-        // When
-        viewModel.onEvent(TodoUiEvent.ToggleTodo(1L))
-        
-        // Then
-        val updated = fakeRepository.todos.find { it.id == 1L }
-        assertNotNull(updated)
-        assertEquals(true, updated?.isCompleted)
-    }
-}
-
-class FakeTodoRepository : TodoRepository {
-    var todos = mutableListOf<Todo>()
-
-    override fun getTodosByDate(date: LocalDate): Flow<List<Todo>> {
-        return flowOf(todos.filter { it.date == date })
-    }
-
-    override suspend fun insertTodo(todo: Todo): Long {
-        val newId = if (todo.id == 0L) (todos.size + 1).toLong() else todo.id
-        todos.add(todo.copy(id = newId))
-        return newId
-    }
-
-    override suspend fun updateTodo(todo: Todo) {
-        val index = todos.indexOfFirst { it.id == todo.id }
-        if (index != -1) {
-            todos[index] = todo
+    fun `Initial state has current date and empty todos`() = runTest {
+        viewModel.uiState.test {
+            val state = awaitItem()
+            assertEquals(LocalDate.now(), state.selectedDate)
+            assertEquals(emptyList<Todo>(), state.todos)
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
-    override suspend fun deleteTodo(id: Long) {
-        todos.removeIf { it.id == id }
+    @Test
+    fun `SelectDate updates selectedDate and triggers todos update`() = runTest {
+        val targetDate = LocalDate.of(2025, 1, 1)
+        val expectedTodos = listOf(
+            Todo(1L, "Test", "Desc", targetDate, false, TodoPriority.LOW)
+        )
+        
+        every { getTodosForDateUseCase(targetDate) } returns flowOf(expectedTodos)
+
+        viewModel.uiState.test {
+            // 1. Initial state
+            awaitItem()
+            
+            viewModel.onEvent(TodoUiEvent.SelectDate(targetDate))
+            
+            // 2. updated selectedDate
+            val stateWithDate = awaitItem()
+            assertEquals(targetDate, stateWithDate.selectedDate)
+            
+            // 3. isLoading = true (from flatMapLatest)
+            val stateLoading = awaitItem()
+            assertEquals(true, stateLoading.isLoading)
+            
+            // 4. todos update and isLoading = false
+            val stateWithTodos = awaitItem()
+            assertEquals(expectedTodos, stateWithTodos.todos)
+            assertEquals(false, stateWithTodos.isLoading)
+            
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
-    override suspend fun getTodoById(id: Long): Todo? {
-        return todos.find { it.id == id }
+    @Test
+    fun `AddTodo should call usecase and show snackbar`() = runTest {
+        val title = "New Job"
+        val desc = "Description"
+        val priority = TodoPriority.MEDIUM
+        val date = viewModel.uiState.value.selectedDate
+        
+        coEvery { 
+            addTodoUseCase(title, desc, date, priority) 
+        } returns 1L
+
+        viewModel.effect.test {
+            viewModel.onEvent(TodoUiEvent.AddTodo(title, desc, priority))
+            
+            val effect = awaitItem()
+            assertEquals(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 추가되었습니다.")), effect)
+            
+            coVerify { addTodoUseCase(title, desc, date, priority) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `ToggleTodo should call usecase`() = runTest {
+        val todoId = 123L
+        coEvery { toggleTodoUseCase(todoId) } returns Unit
+        
+        viewModel.onEvent(TodoUiEvent.ToggleTodo(todoId))
+        
+        coVerify { toggleTodoUseCase(todoId) }
+    }
+
+    @Test
+    fun `DeleteTodo should call usecase and show snackbar`() = runTest {
+        val todoId = 456L
+        coEvery { deleteTodoUseCase(todoId) } returns Unit
+        
+        viewModel.effect.test {
+            viewModel.onEvent(TodoUiEvent.DeleteTodo(todoId))
+            
+            val effect = awaitItem()
+            assertEquals(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 삭제되었습니다.")), effect)
+            
+            coVerify { deleteTodoUseCase(todoId) }
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 }
