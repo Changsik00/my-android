@@ -244,19 +244,19 @@
 - [x] `TodoViewModel`이 `BaseViewModel` 상속하도록 리팩토링
 - [x] `TodoRepositoryImpl`이 `BaseRepository` 상속하도록 리팩토링
 
-### SPEC-602: 전역 에러 핸들러
+### ✅ SPEC-602: 전역 에러 핸들러
 ```
 목표: 어느 레이어에서 발생한 에러도 최상위 UI에서 Snackbar로 표시된다
 완료 조건: 의도적 DB 에러 발생 시 AppScaffold가 Snackbar 표시
 참조: docs/04_advanced_patterns.md > Section 3
 ```
-- [ ] `AppError.kt` sealed class 작성 (NetworkError, DatabaseError, UnknownError)
-- [ ] `AppErrorBus.kt` (object, SharedFlow) 작성
-- [ ] `AppScaffold.kt` Composable 작성
-  - [ ] `LaunchedEffect`로 `AppErrorBus.errors` 수집
-  - [ ] `SnackbarHost`로 메시지 표시
-- [ ] `MainActivity.setContent`에서 `AppScaffold`로 감싸기
-- [ ] `BaseViewModel.launchWithLoading()`이 `AppErrorBus.emit()` 호출하는지 확인
+- [x] `AppError.kt` sealed class 작성 (NetworkError, DatabaseError, UnknownError)
+- [x] `AppErrorBus.kt` (object, SharedFlow) 작성
+- [x] `AppScaffold.kt` Composable 작성
+  - [x] `LaunchedEffect`로 `AppErrorBus.errors` 수집
+  - [x] `SnackbarHost`로 메시지 표시
+- [x] `MainActivity.setContent`에서 `AppScaffold`로 감싸기
+- [x] `BaseViewModel.launchWithLoading()`이 `AppErrorBus.emit()` 호출하는지 확인
 
 ### SPEC-603: 멀티 Activity — TodoDetailActivity
 ```
