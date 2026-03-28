@@ -13,4 +13,5 @@ sealed class TodoUiEvent {
     data class ToggleTodo(val id: Long) : TodoUiEvent()
     data class DeleteTodo(val id: Long) : TodoUiEvent()
     data class ToggleTodoCompletion(val id: Long) : TodoUiEvent() // Explicit action
+    object RefreshList : TodoUiEvent() // SPEC-603: TodoDetailActivity에서 돌아올 때 목록 새로고침
 }

@@ -258,24 +258,24 @@
 - [x] `MainActivity.setContent`에서 `AppScaffold`로 감싸기
 - [x] `BaseViewModel.launchWithLoading()`이 `AppErrorBus.emit()` 호출하는지 확인
 
-### SPEC-603: 멀티 Activity — TodoDetailActivity
+### ✅ SPEC-603: 멀티 Activity — TodoDetailActivity
 ```
 목표: Todo 상세/편집 화면을 별도 Activity로 분리하여 화면 전환을 경험한다
 완료 조건: Todo 아이템 탭 → TodoDetailActivity 슬라이드 전환 → 수정 후 Back → 목록 자동 갱신
 참조: docs/04_advanced_patterns.md > Section 1
 ```
-- [ ] `TodoDetailActivity.kt` 생성 (`@AndroidEntryPoint`)
-  - [ ] `EXTRA_TODO_ID` companion 상수
-  - [ ] Compose로 상세 화면 렌더링
-- [ ] `TodoDetailViewModel.kt` 작성
-  - [ ] `getTodoByIdUseCase` 호출 → 상세 데이터 로드
-  - [ ] 수정 / 삭제 이벤트 처리
-- [ ] `TodoDetailScreen.kt` (Stateless Composable)
-- [ ] `AndroidManifest.xml`에 `TodoDetailActivity` 등록
-- [ ] `CalendarScreen`에서 `ActivityResultLauncher` 설정
-  - [ ] Todo 탭 → Intent + `EXTRA_TODO_ID` 전달
-  - [ ] `RESULT_OK` 반환 시 목록 새로고침 이벤트 발행
-- [ ] Activity 전환 슬라이드 애니메이션 설정
+- [x] `TodoDetailActivity.kt` 생성 (`@AndroidEntryPoint`)
+  - [x] `EXTRA_TODO_ID` companion 상수
+  - [x] Compose로 상세 화면 렌더링
+- [x] `TodoDetailViewModel.kt` 작성
+  - [x] `getTodoByIdUseCase` 호출 → 상세 데이터 로드
+  - [x] 수정 / 삭제 이벤트 처리
+- [x] `TodoDetailScreen.kt` (Stateless Composable)
+- [x] `AndroidManifest.xml`에 `TodoDetailActivity` 등록
+- [x] `CalendarScreen`에서 `ActivityResultLauncher` 설정
+  - [x] Todo 탭 → Intent + `EXTRA_TODO_ID` 전달
+  - [x] `RESULT_OK` 반환 시 목록 새로고침 이벤트 발행
+- [x] Activity 전환 슬라이드 애니메이션 설정
 
 ### SPEC-604: 로딩 애니메이션 강화
 ```

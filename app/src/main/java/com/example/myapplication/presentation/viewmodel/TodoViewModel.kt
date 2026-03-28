@@ -85,6 +85,11 @@ class TodoViewModel @Inject constructor(
                     sendEffect(TodoUiEffect.ShowSnackbar(UiText.DynamicString("할 일이 삭제되었습니다.")))
                 }
             }
+            is TodoUiEvent.RefreshList -> {
+                // SPEC-603: Detail Activity 복귀 시 현재 날짜의 Todo 목록 갱신
+                // dateFlow에 동일 값을 emit하면 flatMapLatest가 재실행됨
+                dateFlow.value = uiState.value.selectedDate
+            }
         }
     }
 }

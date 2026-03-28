@@ -1,5 +1,9 @@
 package com.example.myapplication.presentation.screens.calendar
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -8,8 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.TodoDetailActivity
 import com.example.myapplication.presentation.components.AddTodoBottomSheet
 import com.example.myapplication.presentation.components.TodoListSection
 import com.example.myapplication.presentation.viewmodel.TodoUiEvent
@@ -21,10 +27,20 @@ import java.time.LocalDate
 @Composable
 fun CalendarScreen(
     viewModel: TodoViewModel = hiltViewModel(),
-    onNavigateToDetail: (Long) -> Unit
+    onNavigateToDetail: (Long) -> Unit  // 사용하지 않음 (Activity 전환으로 대체), 인터페이스 유지
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showBottomSheet by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    // SPEC-603: ActivityResultLauncher — RESULT_OK 반환 시 목록 새로고침
+    val detailLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.onEvent(TodoUiEvent.RefreshList)
+        }
+    }
 
     CalendarScreenContent(
         selectedDate = uiState.selectedDate,
@@ -34,7 +50,13 @@ fun CalendarScreen(
         onDateSelected = { date -> viewModel.onEvent(TodoUiEvent.SelectDate(date)) },
         onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
         onDeleteTodo = { id -> viewModel.onEvent(TodoUiEvent.DeleteTodo(id)) },
-        onTodoClick = onNavigateToDetail,
+        onTodoClick = { todoId ->
+            // Intent + EXTRA_TODO_ID로 TodoDetailActivity 이동
+            val intent = Intent(context, TodoDetailActivity::class.java).apply {
+                putExtra(TodoDetailActivity.EXTRA_TODO_ID, todoId)
+            }
+            detailLauncher.launch(intent)
+        },
         onAddClick = { showBottomSheet = true }
     )
 

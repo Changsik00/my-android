@@ -24,6 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- SPEC-603: Todo 상세/편집 화면 Activity -->
+        <activity
+            android:name=".TodoDetailActivity"
+            android:exported="false"
+            android:label="할 일 상세"
+            android:theme="@style/Theme.MyApplication"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
