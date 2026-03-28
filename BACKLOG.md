@@ -277,17 +277,17 @@
   - [x] `RESULT_OK` 반환 시 목록 새로고침 이벤트 발행
 - [x] Activity 전환 슬라이드 애니메이션 설정
 
-### SPEC-604: 로딩 애니메이션 강화
+### ✅ SPEC-604: 로딩 애니메이션 강화
 ```
 목표: 초기 로딩과 새로고침 로딩을 시각적으로 구분하고, Shimmer UI를 적용한다
 완료 조건: 날짜 변경 시 Shimmer → 실제 목록 전환 애니메이션 동작
 참조: docs/04_advanced_patterns.md > Section 2
 ```
-- [ ] `TodoUiState`에 `isRefreshing: Boolean` 필드 추가
-- [ ] `ShimmerTodoItem.kt` Composable 작성 (무한 alpha 애니메이션)
-- [ ] `TodoListSection`에서 `isLoading` 시 Shimmer 목록 표시
-- [ ] `isRefreshing` 시 `LinearProgressIndicator` 오버레이 표시
-- [ ] ViewModel에서 `flatMapLatest` 날짜 전환 시 로딩 상태 순서 보장
+- [x] `TodoUiState`에 `isRefreshing: Boolean` 필드 추가
+- [x] `ShimmerTodoItem.kt` Composable 작성 (무한 alpha 애니메이션)
+- [x] `TodoListSection`에서 `isLoading` 시 Shimmer 목록 표시
+- [x] `isRefreshing` 시 `LinearProgressIndicator` 오버레이 표시
+- [x] ViewModel에서 `flatMapLatest` 날짜 전환 시 로딩 상태 순서 보장
 
 ### SPEC-605: Room 심화 — DatabaseView + Migration
 ```

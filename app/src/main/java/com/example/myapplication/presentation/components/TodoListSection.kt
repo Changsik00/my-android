@@ -1,6 +1,8 @@
 package com.example.myapplication.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,11 +18,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.domain.model.Todo
 
+// Shimmer 스켈레톤으로 표시할 가상 아이템 수
+private const val SHIMMER_ITEM_COUNT = 5
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListSection(
     todos: List<Todo>,
     isLoading: Boolean,
+    isRefreshing: Boolean = false,   // SPEC-604: 날짜 전환 시 오버레이 로딩
     error: String?,
     onToggleTodo: (Long) -> Unit,
     onDeleteTodo: (Long) -> Unit,
@@ -29,15 +35,18 @@ fun TodoListSection(
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         when {
+            // 초기 로딩: 목록이 비어 있을 때 → Shimmer 스켈레톤
             isLoading && todos.isEmpty() -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                ShimmerList()
             }
             error != null && todos.isEmpty() -> {
                 Text(
                     text = error,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center).padding(16.dp)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp)
                 )
             }
             todos.isEmpty() -> {
@@ -45,7 +54,9 @@ fun TodoListSection(
                     text = "등록된 할 일이 없습니다.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center).padding(16.dp)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp)
                 )
             }
             else -> {
@@ -104,6 +115,35 @@ fun TodoListSection(
                     }
                 }
             }
+        }
+
+        // SPEC-604: isRefreshing 시 LinearProgressIndicator 오버레이 (날짜 전환 로딩)
+        AnimatedVisibility(
+            visible = isRefreshing,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.TopCenter)
+        ) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+/**
+ * SPEC-604: Shimmer 스켈레톤 목록 — 초기 로딩 시 표시
+ */
+@Composable
+private fun ShimmerList() {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(SHIMMER_ITEM_COUNT) {
+            ShimmerTodoItem()
         }
     }
 }

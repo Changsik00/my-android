@@ -30,16 +30,22 @@ class TodoViewModel @Inject constructor(
     private fun observeTodos() {
         dateFlow
             .flatMapLatest { date ->
-                updateState { it.copy(isLoading = true, error = null) }
+                // SPEC-604: 기존 목록이 있으면 isRefreshing(오버레이), 없으면 isLoading(전체화면)
+                val hasTodos = uiState.value.todos.isNotEmpty()
+                if (hasTodos) {
+                    updateState { it.copy(isRefreshing = true, error = null) }
+                } else {
+                    updateState { it.copy(isLoading = true, error = null) }
+                }
                 getTodosForDateUseCase(date)
                     .map { todos -> Result.success(todos) }
                     .catch { emit(Result.failure(it)) }
             }
             .onEach { result ->
                 result.onSuccess { todos ->
-                    updateState { it.copy(todos = todos, isLoading = false) }
+                    updateState { it.copy(todos = todos, isLoading = false, isRefreshing = false) }
                 }.onFailure { exception ->
-                    updateState { it.copy(error = exception.message ?: "Unknown error", isLoading = false) }
+                    updateState { it.copy(error = exception.message ?: "Unknown error", isLoading = false, isRefreshing = false) }
                     sendEffect(TodoUiEffect.ShowSnackbar(UiText.DynamicString("데이터를 불러오지 못했습니다.")))
                 }
             }
