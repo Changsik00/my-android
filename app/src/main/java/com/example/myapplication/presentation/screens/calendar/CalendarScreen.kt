@@ -46,6 +46,7 @@ fun CalendarScreen(
         selectedDate = uiState.selectedDate,
         todos = uiState.todos,
         isLoading = uiState.isLoading,
+        isRefreshing = uiState.isRefreshing,
         error = uiState.error,
         onDateSelected = { date -> viewModel.onEvent(TodoUiEvent.SelectDate(date)) },
         onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
@@ -76,6 +77,7 @@ fun CalendarScreenContent(
     selectedDate: LocalDate,
     todos: List<Todo>,
     isLoading: Boolean,
+    isRefreshing: Boolean = false,
     error: String?,
     onDateSelected: (LocalDate) -> Unit,
     onToggleTodo: (Long) -> Unit,
@@ -112,10 +114,11 @@ fun CalendarScreenContent(
             
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             
-            // SPEC-403: Todo List Section 추가
+            // SPEC-403/604: Todo List Section (Shimmer + RefreshOverlay)
             TodoListSection(
                 todos = todos,
                 isLoading = isLoading,
+                isRefreshing = isRefreshing,
                 error = error,
                 onToggleTodo = onToggleTodo,
                 onDeleteTodo = onDeleteTodo,
