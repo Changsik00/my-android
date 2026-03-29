@@ -37,13 +37,14 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
+import com.example.myapplication.domain.model.TodoSummary
 
 @Composable
 fun MonthCalendar(
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
-    todoCounts: Map<LocalDate, Int> = emptyMap() // For future indicators
+    todoSummaries: Map<LocalDate, TodoSummary> = emptyMap() // SPEC-605
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.from(selectedDate)) }
 
@@ -60,7 +61,7 @@ fun MonthCalendar(
             currentMonth = currentMonth,
             selectedDate = selectedDate,
             onDateSelected = onDateSelected,
-            todoCounts = todoCounts
+            todoSummaries = todoSummaries
         )
     }
 }
@@ -119,7 +120,7 @@ private fun DaysGrid(
     currentMonth: YearMonth,
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit,
-    todoCounts: Map<LocalDate, Int>
+    todoSummaries: Map<LocalDate, TodoSummary>
 ) {
     val firstDayOfMonth = currentMonth.atDay(1)
     // 1(Mon) ~ 7(Sun) -> API. Convert to Sunday first index
@@ -142,7 +143,7 @@ private fun DaysGrid(
                             date = date,
                             isSelected = date == selectedDate,
                             onDateSelected = onDateSelected,
-                            todoCount = todoCounts[date] ?: 0,
+                            summary = todoSummaries[date],
                             modifier = Modifier.weight(1f)
                         )
                     } else {
@@ -159,7 +160,7 @@ private fun DayCell(
     date: LocalDate,
     isSelected: Boolean,
     onDateSelected: (LocalDate) -> Unit,
-    todoCount: Int,
+    summary: TodoSummary?,
     modifier: Modifier = Modifier
 ) {
     val backgroundColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
@@ -186,13 +187,20 @@ private fun DayCell(
                 color = contentColor,
                 style = MaterialTheme.typography.bodyMedium
             )
-            // Indicator hook
-            if (todoCount > 0) {
+            // SPEC-605: 완료/전체 인디케이터 뱃지
+            if (summary != null && summary.totalCount > 0) {
+                val allDone = summary.completedCount == summary.totalCount
                 Box(
                     modifier = Modifier
                         .size(4.dp)
                         .clip(CircleShape)
-                        .background(if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary)
+                        .background(
+                            when {
+                                isSelected -> MaterialTheme.colorScheme.onPrimary
+                                allDone -> MaterialTheme.colorScheme.secondary  // 전부 완료: 초록빛
+                                else -> MaterialTheme.colorScheme.primary        // 미완료 있음: 파란빛
+                            }
+                        )
                 )
             }
         }

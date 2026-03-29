@@ -1,14 +1,13 @@
 package com.example.myapplication.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.usecase.*
 import com.example.myapplication.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,14 +15,18 @@ class TodoViewModel @Inject constructor(
     private val getTodosForDateUseCase: GetTodosForDateUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val toggleTodoUseCase: ToggleTodoUseCase,
-    private val deleteTodoUseCase: DeleteTodoUseCase
+    private val deleteTodoUseCase: DeleteTodoUseCase,
+    private val getTodoSummaryForMonthUseCase: GetTodoSummaryForMonthUseCase  // SPEC-605
 ) : BaseViewModel<TodoUiEvent, TodoUiState, TodoUiEffect>(TodoUiState()) {
 
-    // 별도의 date flow를 유지하여 flatMapLatest로 연결 (Reactive Architecture)
     private val dateFlow = MutableStateFlow(LocalDate.now())
+
+    // SPEC-605: 현재 표시 중인 월 Flow (달력 월 이동 시 통계도 갱신)
+    private val monthFlow = MutableStateFlow(YearMonth.now())
 
     init {
         observeTodos()
+        observeSummary()  // SPEC-605
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -52,11 +55,27 @@ class TodoViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    // SPEC-605: 월별 Summary Flow 구독
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun observeSummary() {
+        monthFlow
+            .flatMapLatest { yearMonth ->
+                getTodoSummaryForMonthUseCase(yearMonth)
+            }
+            .onEach { summaries ->
+                updateState { it.copy(todoSummaries = summaries) }
+            }
+            .catch { /* 통계 오류는 UI를 막지 않음 */ }
+            .launchIn(viewModelScope)
+    }
+
     override fun onEvent(event: TodoUiEvent) {
         when (event) {
             is TodoUiEvent.SelectDate -> {
                 updateState { it.copy(selectedDate = event.date) }
                 dateFlow.value = event.date
+                // 날짜가 속한 월로 통계도 갱신
+                monthFlow.value = YearMonth.from(event.date)
             }
             is TodoUiEvent.AddTodo -> {
                 launchWithLoading(
@@ -92,8 +111,6 @@ class TodoViewModel @Inject constructor(
                 }
             }
             is TodoUiEvent.RefreshList -> {
-                // SPEC-603: Detail Activity 복귀 시 현재 날짜의 Todo 목록 갱신
-                // dateFlow에 동일 값을 emit하면 flatMapLatest가 재실행됨
                 dateFlow.value = uiState.value.selectedDate
             }
         }
