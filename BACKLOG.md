@@ -337,21 +337,21 @@
 - [x] `WeatherRemoteDataSource` 및 API 엔드포인트 중앙화 (`ApiEndpoints`)
 - [x] 데이터 Payload 분리 및 `WeatherAuthInterceptor` 적용
 
-### SPEC-703: Weather Repository + Offline-First 캐싱
+### ✅ SPEC-703: Weather Repository + Offline-First 캐싱
 ```
 목표: API 결과를 Room에 캐싱하고 오프라인에서도 최근 날씨를 표시한다
 완료 조건: 비행기 모드에서도 캐시된 날씨 데이터가 표시됨
 참조: docs/05_api_integration.md > Section 6
 ```
-- [ ] `WeatherCacheEntity.kt` Room 엔티티 작성 (dateKey, condition, tempCelsius, iconCode, cachedAt)
-- [ ] `WeatherCacheDao.kt` 작성 (upsert, getWeather)
-- [ ] `TodoDatabase`에 `WeatherCacheEntity` 추가 + Migration
-- [ ] `WeatherInfo.kt` Domain 모델 작성
-- [ ] `WeatherRepository.kt` 인터페이스 (domain 레이어)
-- [ ] `WeatherRepositoryImpl.kt` 구현
-  - [ ] 캐시 즉시 emit → API 호출 → 캐시 갱신 → 새 값 emit (Flow)
-  - [ ] 캐시 유효기간 1시간 체크
-- [ ] `RepositoryModule.kt`에 WeatherRepository 바인딩 추가
+- [x] `WeatherCacheEntity.kt` Room 엔티티 작성 (dateKey, condition, tempCelsius, iconCode, cachedAt)
+- [x] `WeatherCacheDao.kt` 작성 (upsert, getWeather)
+- [x] `TodoDatabase`에 `WeatherCacheEntity` 추가 + Migration
+- [x] `WeatherInfo.kt` Domain 모델 작성
+- [x] `WeatherRepository.kt` 인터페이스 (domain 레이어)
+- [x] `WeatherRepositoryImpl.kt` 구현
+  - [x] 캐시 즉시 emit → API 호출 → 캐시 갱신 → 새 값 emit (Flow)
+  - [x] 캐시 유효기간 1시간 체크
+- [x] `RepositoryModule.kt`에 WeatherRepository 바인딩 추가
 
 ### SPEC-704: Weather UseCase + ViewModel 통합
 ```
