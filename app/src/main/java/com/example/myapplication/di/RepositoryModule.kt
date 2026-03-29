@@ -1,5 +1,7 @@
 package com.example.myapplication.di
 
+import com.example.myapplication.data.remote.source.WeatherRemoteDataSource
+import com.example.myapplication.data.remote.source.WeatherRemoteDataSourceImpl
 import com.example.myapplication.data.repository.TodoRepositoryImpl
 import com.example.myapplication.domain.repository.TodoRepository
 import dagger.Binds
@@ -17,4 +19,9 @@ abstract class RepositoryModule {
     abstract fun bindTodoRepository(
         todoRepositoryImpl: TodoRepositoryImpl
     ): TodoRepository
+    @Binds
+    @Singleton
+    abstract fun bindWeatherRemoteDataSource(
+        weatherRemoteDataSourceImpl: WeatherRemoteDataSourceImpl
+    ): WeatherRemoteDataSource
 }

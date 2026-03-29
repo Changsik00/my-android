@@ -325,16 +325,17 @@
   - [x] Retrofit (baseUrl, Json converter)
   - [x] `WeatherApi` binding
 
-### SPEC-702: NetworkResult + safeApiCall
+### ✅ SPEC-702: NetworkResult + safeApiCall + RemoteDataSource 리팩토링
 ```
 목표: API 호출 성공/실패/로딩을 타입 안전하게 처리하는 공통 래퍼를 만든다
 완료 조건: safeApiCall이 HttpException과 IOException을 각각 다르게 처리
 참조: docs/05_api_integration.md > Section 5
 ```
-- [ ] `NetworkResult.kt` sealed class 작성 (Success, Error, Loading)
-- [ ] `safeApiCall()` suspend 확장 함수 작성
-- [ ] `AppError`에 `NetworkError` 포함 확인 (SPEC-602 선행 필요)
-- [ ] `BaseRepository.safeApiCall()` 호출 통합
+- [x] `NetworkResult.kt` sealed class 작성 (Success, Error, Loading)
+- [x] `safeApiCall()` suspend 확장 함수 작성
+- [x] `ApiErrorReporter` 에러 로깅/전송 추상화 모듈 추가
+- [x] `WeatherRemoteDataSource` 및 API 엔드포인트 중앙화 (`ApiEndpoints`)
+- [x] 데이터 Payload 분리 및 `WeatherAuthInterceptor` 적용
 
 ### SPEC-703: Weather Repository + Offline-First 캐싱
 ```
