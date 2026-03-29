@@ -306,24 +306,24 @@
 
 ## Epic 7 — 날씨 API 연동 (OpenWeatherMap)
 
-### SPEC-701: 네트워크 레이어 기반 설정
+### ✅ SPEC-701: 네트워크 레이어 기반 설정
 ```
 목표: Retrofit + OkHttp + kotlinx.serialization로 네트워크 레이어를 구성한다
 완료 조건: WeatherApi.kt 인터페이스 호출 시 실제 JSON 응답 수신
 참조: docs/05_api_integration.md > Section 2~4
 ```
-- [ ] `libs.versions.toml`에 Retrofit, OkHttp, kotlinx.serialization 버전 추가
-- [ ] `app/build.gradle.kts`에 의존성 추가
-- [ ] `local.properties`에 `WEATHER_API_KEY` 추가 (OpenWeatherMap 가입 후 발급)
-- [ ] `app/build.gradle.kts`에 `buildConfigField` 설정
-- [ ] `WeatherResponseDto.kt`, `ForecastResponseDto.kt` (@Serializable) 작성
-- [ ] `WeatherApi.kt` Retrofit 인터페이스 작성
-  - [ ] `getCurrentWeather()` - 당일 날씨
-  - [ ] `getWeatherForecast()` - 5일 예보
-- [ ] `NetworkModule.kt` (Hilt `@Singleton`) 작성
-  - [ ] OkHttp (LoggingInterceptor, timeout)
-  - [ ] Retrofit (baseUrl, Json converter)
-  - [ ] `WeatherApi` binding
+- [x] `libs.versions.toml`에 Retrofit, OkHttp, kotlinx.serialization 버전 추가
+- [x] `app/build.gradle.kts`에 의존성 추가
+- [x] `local.properties`에 `WEATHER_API_KEY` 추가 (OpenWeatherMap 가입 후 발급)
+- [x] `app/build.gradle.kts`에 `buildConfigField` 설정
+- [x] `WeatherResponseDto.kt`, `ForecastResponseDto.kt` (@Serializable) 작성
+- [x] `WeatherApi.kt` Retrofit 인터페이스 작성
+  - [x] `getCurrentWeather()` - 당일 날씨
+  - [x] `getWeatherForecast()` - 5일 예보
+- [x] `NetworkModule.kt` (Hilt `@Singleton`) 작성
+  - [x] OkHttp (LoggingInterceptor, timeout)
+  - [x] Retrofit (baseUrl, Json converter)
+  - [x] `WeatherApi` binding
 
 ### SPEC-702: NetworkResult + safeApiCall
 ```
