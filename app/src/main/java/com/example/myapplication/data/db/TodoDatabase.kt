@@ -22,14 +22,27 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
+/**
+ * SPEC-703: MIGRATION_2_3
+ * 날씨 캐싱용 테이블 생성
+ */
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS `weather_cache` (`dateKey` TEXT NOT NULL, `condition` TEXT NOT NULL, `tempCelsius` REAL NOT NULL, `minTemp` REAL NOT NULL, `maxTemp` REAL NOT NULL, `iconCode` TEXT NOT NULL, `cachedAt` INTEGER NOT NULL, PRIMARY KEY(`dateKey`))"
+        )
+    }
+}
+
 @Database(
-    entities = [TodoEntity::class],
-    views = [TodoSummaryView::class],   // SPEC-605: DatabaseView 등록
-    version = 2,                         // SPEC-605: v1 → v2 (MIGRATION_1_2)
+    entities = [TodoEntity::class, com.example.myapplication.data.local.entity.WeatherCacheEntity::class],
+    views = [TodoSummaryView::class],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(LocalDateConverter::class, TodoPriorityConverter::class)
 abstract class TodoDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao
-    abstract fun todoSummaryDao(): TodoSummaryDao  // SPEC-605: Summary DAO 추가
+    abstract fun todoSummaryDao(): TodoSummaryDao
+    abstract fun weatherCacheDao(): WeatherCacheDao // SPEC-703
 }
