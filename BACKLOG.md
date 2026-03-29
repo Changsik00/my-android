@@ -306,35 +306,36 @@
 
 ## Epic 7 — 날씨 API 연동 (OpenWeatherMap)
 
-### SPEC-701: 네트워크 레이어 기반 설정
+### ✅ SPEC-701: 네트워크 레이어 기반 설정
 ```
 목표: Retrofit + OkHttp + kotlinx.serialization로 네트워크 레이어를 구성한다
 완료 조건: WeatherApi.kt 인터페이스 호출 시 실제 JSON 응답 수신
 참조: docs/05_api_integration.md > Section 2~4
 ```
-- [ ] `libs.versions.toml`에 Retrofit, OkHttp, kotlinx.serialization 버전 추가
-- [ ] `app/build.gradle.kts`에 의존성 추가
-- [ ] `local.properties`에 `WEATHER_API_KEY` 추가 (OpenWeatherMap 가입 후 발급)
-- [ ] `app/build.gradle.kts`에 `buildConfigField` 설정
-- [ ] `WeatherResponseDto.kt`, `ForecastResponseDto.kt` (@Serializable) 작성
-- [ ] `WeatherApi.kt` Retrofit 인터페이스 작성
-  - [ ] `getCurrentWeather()` - 당일 날씨
-  - [ ] `getWeatherForecast()` - 5일 예보
-- [ ] `NetworkModule.kt` (Hilt `@Singleton`) 작성
-  - [ ] OkHttp (LoggingInterceptor, timeout)
-  - [ ] Retrofit (baseUrl, Json converter)
-  - [ ] `WeatherApi` binding
+- [x] `libs.versions.toml`에 Retrofit, OkHttp, kotlinx.serialization 버전 추가
+- [x] `app/build.gradle.kts`에 의존성 추가
+- [x] `local.properties`에 `WEATHER_API_KEY` 추가 (OpenWeatherMap 가입 후 발급)
+- [x] `app/build.gradle.kts`에 `buildConfigField` 설정
+- [x] `WeatherResponseDto.kt`, `ForecastResponseDto.kt` (@Serializable) 작성
+- [x] `WeatherApi.kt` Retrofit 인터페이스 작성
+  - [x] `getCurrentWeather()` - 당일 날씨
+  - [x] `getWeatherForecast()` - 5일 예보
+- [x] `NetworkModule.kt` (Hilt `@Singleton`) 작성
+  - [x] OkHttp (LoggingInterceptor, timeout)
+  - [x] Retrofit (baseUrl, Json converter)
+  - [x] `WeatherApi` binding
 
-### SPEC-702: NetworkResult + safeApiCall
+### ✅ SPEC-702: NetworkResult + safeApiCall + RemoteDataSource 리팩토링
 ```
 목표: API 호출 성공/실패/로딩을 타입 안전하게 처리하는 공통 래퍼를 만든다
 완료 조건: safeApiCall이 HttpException과 IOException을 각각 다르게 처리
 참조: docs/05_api_integration.md > Section 5
 ```
-- [ ] `NetworkResult.kt` sealed class 작성 (Success, Error, Loading)
-- [ ] `safeApiCall()` suspend 확장 함수 작성
-- [ ] `AppError`에 `NetworkError` 포함 확인 (SPEC-602 선행 필요)
-- [ ] `BaseRepository.safeApiCall()` 호출 통합
+- [x] `NetworkResult.kt` sealed class 작성 (Success, Error, Loading)
+- [x] `safeApiCall()` suspend 확장 함수 작성
+- [x] `ApiErrorReporter` 에러 로깅/전송 추상화 모듈 추가
+- [x] `WeatherRemoteDataSource` 및 API 엔드포인트 중앙화 (`ApiEndpoints`)
+- [x] 데이터 Payload 분리 및 `WeatherAuthInterceptor` 적용
 
 ### SPEC-703: Weather Repository + Offline-First 캐싱
 ```
