@@ -47,6 +47,7 @@ fun CalendarScreen(
         todos = uiState.todos,
         isLoading = uiState.isLoading,
         isRefreshing = uiState.isRefreshing,
+        todoSummaries = uiState.todoSummaries,
         error = uiState.error,
         onDateSelected = { date -> viewModel.onEvent(TodoUiEvent.SelectDate(date)) },
         onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
@@ -78,6 +79,7 @@ fun CalendarScreenContent(
     todos: List<Todo>,
     isLoading: Boolean,
     isRefreshing: Boolean = false,
+    todoSummaries: Map<LocalDate, com.example.myapplication.domain.model.TodoSummary> = emptyMap(),
     error: String?,
     onDateSelected: (LocalDate) -> Unit,
     onToggleTodo: (Long) -> Unit,
@@ -109,6 +111,7 @@ fun CalendarScreenContent(
             MonthCalendar(
                 selectedDate = selectedDate,
                 onDateSelected = onDateSelected,
+                todoSummaries = todoSummaries,
                 modifier = Modifier.padding(16.dp)
             )
             

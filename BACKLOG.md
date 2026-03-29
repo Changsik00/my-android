@@ -289,18 +289,18 @@
 - [x] `isRefreshing` 시 `LinearProgressIndicator` 오버레이 표시
 - [x] ViewModel에서 `flatMapLatest` 날짜 전환 시 로딩 상태 순서 보장
 
-### SPEC-605: Room 심화 — DatabaseView + Migration
+### ✅ SPEC-605: Room 심화 — DatabaseView + Migration
 ```
 목표: DatabaseView로 달력 인디케이터용 집계 데이터를 제공하고, Migration 패턴을 적용한다
 완료 조건: 달력 날짜 셀에 Todo 완료/전체 수가 DatabaseView에서 표시됨
 참조: docs/04_advanced_patterns.md > Section 4
 ```
-- [ ] `TodoSummaryView.kt` (`@DatabaseView`) 작성
-- [ ] `TodoSummaryDao.kt` — `Flow<TodoSummaryView?>` 반환
-- [ ] `TodoDatabase`에 `TodoSummaryView` 등록
-- [ ] `GetTodoSummaryForMonthUseCase.kt` 작성
-- [ ] `CalendarScreen`의 날짜 셀에 인디케이터 뱃지 표시
-- [ ] `MIGRATION_1_2` 예제 작성 (priority 필드 추가)
+- [x] `TodoSummaryView.kt` (`@DatabaseView`) 작성
+- [x] `TodoSummaryDao.kt` — `Flow<List<TodoSummaryView>>` 반환
+- [x] `TodoDatabase`에 `TodoSummaryView` 등록 및 version=2 업그레이드
+- [x] `GetTodoSummaryForMonthUseCase.kt` 작성
+- [x] `CalendarScreen`의 날짜 셀에 인디케이터 뱃지 표시 (미완료=파란점, 전부완료=초록점)
+- [x] `MIGRATION_1_2` 예제 작성 (priority 필드 추가)
 
 ---
 
