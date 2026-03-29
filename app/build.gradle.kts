@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)  // SPEC-701
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -18,6 +19,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // SPEC-701: API 키를 local.properties에서 읽어 BuildConfig로 주입
+        val weatherApiKey = project.findProperty("WEATHER_API_KEY")?.toString() ?: ""
+        buildConfigField("String", "WEATHER_API_KEY", "\"$weatherApiKey\"")
     }
 
     buildTypes {
@@ -39,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true  // SPEC-701: BuildConfig 활성화
     }
 }
 
@@ -79,6 +85,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // SPEC-701: Retrofit + OkHttp + kotlinx.serialization
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.kotlinx.serialization)
 
     // Tests
     testImplementation(libs.mockk)
