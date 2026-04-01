@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.TodoDetailActivity
 import com.example.myapplication.presentation.components.AddTodoBottomSheet
 import com.example.myapplication.presentation.components.TodoListSection
+import com.example.myapplication.presentation.components.WeatherBadge
 import com.example.myapplication.presentation.viewmodel.TodoUiEvent
 import com.example.myapplication.presentation.viewmodel.TodoViewModel
 import com.example.myapplication.domain.model.Todo
@@ -48,6 +49,8 @@ fun CalendarScreen(
         isLoading = uiState.isLoading,
         isRefreshing = uiState.isRefreshing,
         todoSummaries = uiState.todoSummaries,
+        weather = uiState.weather,
+        isWeatherLoading = uiState.isWeatherLoading,
         error = uiState.error,
         onDateSelected = { date -> viewModel.onEvent(TodoUiEvent.SelectDate(date)) },
         onToggleTodo = { id -> viewModel.onEvent(TodoUiEvent.ToggleTodo(id)) },
@@ -80,6 +83,8 @@ fun CalendarScreenContent(
     isLoading: Boolean,
     isRefreshing: Boolean = false,
     todoSummaries: Map<LocalDate, com.example.myapplication.domain.model.TodoSummary> = emptyMap(),
+    weather: com.example.myapplication.domain.model.WeatherInfo?,
+    isWeatherLoading: Boolean,
     error: String?,
     onDateSelected: (LocalDate) -> Unit,
     onToggleTodo: (Long) -> Unit,
@@ -108,6 +113,15 @@ fun CalendarScreenContent(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            // SPEC-704: Calendar Header 쪽에 날씨 뱃지 배치
+            WeatherBadge(
+                weather = weather,
+                isLoading = isWeatherLoading,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(end = 16.dp, top = 8.dp)
+            )
+
             MonthCalendar(
                 selectedDate = selectedDate,
                 onDateSelected = onDateSelected,
