@@ -16,7 +16,8 @@ class TodoViewModel @Inject constructor(
     private val addTodoUseCase: AddTodoUseCase,
     private val toggleTodoUseCase: ToggleTodoUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase,
-    private val getTodoSummaryForMonthUseCase: GetTodoSummaryForMonthUseCase  // SPEC-605
+    private val getTodoSummaryForMonthUseCase: GetTodoSummaryForMonthUseCase, // SPEC-605
+    private val getWeatherForDateUseCase: GetWeatherForDateUseCase            // SPEC-704
 ) : BaseViewModel<TodoUiEvent, TodoUiState, TodoUiEffect>(TodoUiState()) {
 
     private val dateFlow = MutableStateFlow(LocalDate.now())
@@ -27,6 +28,7 @@ class TodoViewModel @Inject constructor(
     init {
         observeTodos()
         observeSummary()  // SPEC-605
+        observeWeather()  // SPEC-704
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -66,6 +68,28 @@ class TodoViewModel @Inject constructor(
                 updateState { it.copy(todoSummaries = summaries) }
             }
             .catch { /* 통계 오류는 UI를 막지 않음 */ }
+            .launchIn(viewModelScope)
+    }
+
+    // SPEC-704: 날씨 Flow 구독
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun observeWeather() {
+        dateFlow
+            .onEach { updateState { it.copy(isWeatherLoading = true) } }
+            .flatMapLatest { date ->
+                getWeatherForDateUseCase(date)
+                    .catch { 
+                        updateState { it.copy(isWeatherLoading = false) }
+                    }
+            }
+            .onEach { weatherInfo ->
+                updateState { 
+                    it.copy(
+                        weather = weatherInfo,
+                        isWeatherLoading = false
+                    ) 
+                }
+            }
             .launchIn(viewModelScope)
     }
 

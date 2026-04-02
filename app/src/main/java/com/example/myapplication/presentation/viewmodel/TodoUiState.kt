@@ -2,6 +2,7 @@ package com.example.myapplication.presentation.viewmodel
 
 import com.example.myapplication.domain.model.Todo
 import com.example.myapplication.domain.model.TodoSummary
+import com.example.myapplication.domain.model.WeatherInfo
 import java.time.LocalDate
 
 data class TodoUiState(
@@ -11,5 +12,8 @@ data class TodoUiState(
     val isRefreshing: Boolean = false,
     val error: String? = null,
     // SPEC-605: DatabaseView — 달력 날짜 셀 인디케이터용 월별 통계
-    val todoSummaries: Map<LocalDate, TodoSummary> = emptyMap()
+    val todoSummaries: Map<LocalDate, TodoSummary> = emptyMap(),
+    // SPEC-704: 날씨 상태
+    val weather: WeatherInfo? = null,
+    val isWeatherLoading: Boolean = false
 )

@@ -353,19 +353,19 @@
   - [x] 캐시 유효기간 1시간 체크
 - [x] `RepositoryModule.kt`에 WeatherRepository 바인딩 추가
 
-### SPEC-704: Weather UseCase + ViewModel 통합
+### ✅ SPEC-704: Weather UseCase + ViewModel 통합
 ```
 목표: TodoViewModel에 날씨 정보를 통합하여 날짜 선택 시 날씨를 함께 표시한다
 완료 조건: 캘린더에서 날짜 선택 시 해당 날의 날씨와 기온이 표시됨
 참조: docs/05_api_integration.md > Section 7
 ```
-- [ ] `GetWeatherForDateUseCase.kt` 작성
-- [ ] `TodoUiState`에 `weather: WeatherInfo?`, `isWeatherLoading: Boolean` 추가
-- [ ] `TodoViewModel`에 날짜 변경 시 날씨 조회 Flow 연동
-  - [ ] `combine(todosFlow, weatherFlow)` 로 단일 UiState 업데이트
-- [ ] `WeatherBadge.kt` Composable 작성 (기온 + 날씨 조건 + 아이콘 emoji)
-- [ ] `CalendarScreen` 상단에 `WeatherBadge` 배치
-- [ ] `isWeatherLoading` 시 Badge 자리에 shimmer 표시
+- [x] `GetWeatherForDateUseCase.kt` 작성
+- [x] `TodoUiState`에 `weather: WeatherInfo?`, `isWeatherLoading: Boolean` 추가
+- [x] `TodoViewModel`에 날짜 변경 시 날씨 조회 Flow 연동
+  - [x] `combine(todosFlow, weatherFlow)` 로 단일 UiState 업데이트 (개별 Flow 관찰로 대체)
+- [x] `WeatherBadge.kt` Composable 작성 (기온 + 날씨 조건 + 아이콘 emoji)
+- [x] `CalendarScreen` 상단에 `WeatherBadge` 배치
+- [x] `isWeatherLoading` 시 Badge 자리에 shimmer 표시
 
 ---
 
