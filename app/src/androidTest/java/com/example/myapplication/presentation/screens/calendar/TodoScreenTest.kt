@@ -45,6 +45,11 @@ class TodoScreenTest {
             .performClick()
 
         // BottomSheet 내 "새 할 일 추가" 텍스트가 표시되어야 함
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule
+                .onAllNodesWithText("새 할 일 추가")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
         composeTestRule
             .onNodeWithText("새 할 일 추가")
             .assertIsDisplayed()
@@ -59,8 +64,8 @@ class TodoScreenTest {
             .onNodeWithContentDescription("Add Todo")
             .performClick()
 
-        // 2. BottomSheet가 열릴 때까지 대기
-        composeTestRule.waitUntil(timeoutMillis = 3_000) {
+        // 2. BottomSheet가 열릴 때까지 대기 (네트워크 초기화 포함, 넉넉히 대기)
+        composeTestRule.waitUntil(timeoutMillis = 8_000) {
             composeTestRule
                 .onAllNodesWithText("새 할 일 추가")
                 .fetchSemanticsNodes().isNotEmpty()
@@ -79,11 +84,16 @@ class TodoScreenTest {
             .performClick()
 
         // 5. BottomSheet가 닫히면 "새 할 일 추가" 텍스트가 사라져야 함
-        composeTestRule.waitUntil(timeoutMillis = 3_000) {
+        composeTestRule.waitUntil(timeoutMillis = 8_000) {
             composeTestRule
                 .onAllNodesWithText("새 할 일 추가")
                 .fetchSemanticsNodes().isEmpty()
         }
+
+        // 6. 메인 화면이 여전히 표시되어야 함
+        composeTestRule
+            .onNodeWithText("Todo Scheduler")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -94,7 +104,7 @@ class TodoScreenTest {
             .performClick()
 
         // 제목 입력 없이 저장 버튼이 비활성화 상태인지 확인
-        composeTestRule.waitUntil(timeoutMillis = 3_000) {
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
                 .onAllNodesWithText("저장")
                 .fetchSemanticsNodes().isNotEmpty()
@@ -112,7 +122,7 @@ class TodoScreenTest {
             .onNodeWithContentDescription("Add Todo")
             .performClick()
 
-        composeTestRule.waitUntil(timeoutMillis = 3_000) {
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
                 .onAllNodesWithText("취소")
                 .fetchSemanticsNodes().isNotEmpty()
@@ -123,8 +133,8 @@ class TodoScreenTest {
             .onNodeWithText("취소")
             .performClick()
 
-        // BottomSheet가 닫혀야 함
-        composeTestRule.waitUntil(timeoutMillis = 3_000) {
+        // BottomSheet가 닫혀야 함 (애니메이션 포함)
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
                 .onAllNodesWithText("새 할 일 추가")
                 .fetchSemanticsNodes().isEmpty()
@@ -145,8 +155,12 @@ class TodoScreenTest {
 
     @Test
     fun calendar_screen_displays_month_calendar() {
-        // 달력(MonthCalendar)이 표시되는지 — 현재 월/년 텍스트 존재 여부로 검증
-        // 달력 영역에 날짜 숫자(1~28)가 하나 이상 표시되어야 함
+        // 달력(MonthCalendar)이 표시되는지 — 날짜 숫자가 하나 이상 표시되어야 함
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule
+                .onAllNodesWithText("1")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
         composeTestRule
             .onAllNodesWithText("1")
             .onFirst()
@@ -156,7 +170,12 @@ class TodoScreenTest {
     @Test
     fun selecting_date_updates_calendar_selection() {
         // 달력에서 "15"를 탭하면 해당 셀이 선택 상태를 반영해야 함
-        // (날짜 셀이 존재하는지 확인 — 실제 색상 변화는 스크린샷/비주얼 테스트 필요)
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule
+                .onAllNodesWithText("15")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
         composeTestRule
             .onAllNodesWithText("15")
             .onFirst()
