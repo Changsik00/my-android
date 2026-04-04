@@ -215,14 +215,14 @@
 - [x] 날짜 변경 이벤트 → 상태 변화 검증
 - [x] Todo 추가/삭제/완료 이벤트 검증
 
-### SPEC-503: UI 테스트 (선택)
+### ✅ SPEC-503: UI 테스트 (선택)
 ```
 목표: Compose UI를 자동화 테스트한다
 완료 조건: 주요 사용자 플로우가 Compose Test로 검증
 ```
-- [ ] `TodoScreenTest.kt` (ComposeTestRule)
-- [ ] 할 일 추가 플로우 테스트
-- [ ] 날짜 선택 플로우 테스트
+- [x] `TodoScreenTest.kt` (ComposeTestRule)
+- [x] 할 일 추가 플로우 테스트
+- [x] 날짜 선택 플로우 테스트
 
 ---
 
